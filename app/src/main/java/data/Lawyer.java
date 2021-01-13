@@ -1,6 +1,7 @@
 package data;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import java.util.UUID;
 
@@ -47,6 +48,7 @@ public class Lawyer {
         return avatarUri;
     }
 
+    /*Conversor a pares clave-valor*/
     public ContentValues toContentValues() {
         ContentValues values = new ContentValues();
         values.put(LawyersContract.LawyerEntry.ID, id);
@@ -57,4 +59,7 @@ public class Lawyer {
         values.put(LawyersContract.LawyerEntry.AVATAR_URI, avatarUri);
         return values;
     }
+
+
+
 }

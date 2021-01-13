@@ -1,6 +1,7 @@
 package data;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -79,5 +80,33 @@ public class LawyersDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
         return sqLiteDatabase.insert(DATABASE_NAME, null, lawyer.toContentValues());
+    }
+
+    /*Método para obtener todos los abogados*/
+    public Cursor getAllLawyers(){
+        return getReadableDatabase()
+                .query(
+                        LawyersContract.LawyerEntry.TABLE_NAME,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
+    }
+
+    /*Búsqueda de abogado por ID*/
+    public Cursor getLawyerById(String lawyerId){
+        Cursor c = getReadableDatabase().query(
+                LawyersContract.LawyerEntry.TABLE_NAME,
+                null,
+                LawyersContract.LawyerEntry.ID + "LIKE ?",
+                new String[]{lawyerId},
+                null,
+                null,
+                null);
+        /*Retormanos el cursor resultado de nuestra consulta*/
+        return c;
+
     }
 }
