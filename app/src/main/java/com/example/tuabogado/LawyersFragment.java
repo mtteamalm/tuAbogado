@@ -1,5 +1,6 @@
 package com.example.tuabogado;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -10,15 +11,21 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import data.LawyersContract;
 import data.LawyersDbHelper;
+import lawyerdetail.LawyerDetailActivity;
+import lawyerdetail.LawyerDetailFragment;
+import lawyers.LawyersActivity;
 import lawyers.LawyersCursorAdapter;
 
 public class LawyersFragment extends Fragment {
 
+    private static final int REQUEST_UPDATE_DELETE_LAWYER = 2;
     private LawyersDbHelper mLawyersDbHelper;
 
     private ListView mLawyersList;
@@ -46,6 +53,19 @@ public class LawyersFragment extends Fragment {
 
         //Asignación
         mLawyersList.setAdapter(mLawyersAdapter);
+        
+        /** EVENTOS */
+        mLawyersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor currentItem = (Cursor) mLawyersAdapter.getItem(position);
+                String currentLawyerId = currentItem.getString(
+                        currentItem.getColumnIndex(LawyersContract.LawyerEntry.ID));
+                
+                showDetailScreen(currentLawyerId);
+            }
+        });
+        /** FIN EVENTOS*/
 
         //Instancia del Helper
         mLawyersDbHelper = new LawyersDbHelper(getActivity());
@@ -54,6 +74,12 @@ public class LawyersFragment extends Fragment {
         loadLawyers();
 
         return root;
+    }
+
+    private void showDetailScreen(String lawyerId) {
+        Intent intent = new Intent(getActivity(), LawyerDetailActivity.class);
+        intent.putExtra(LawyersActivity.EXTRA_LAWYER_ID, lawyerId);
+        startActivityForResult(intent, REQUEST_UPDATE_DELETE_LAWYER);
     }
 
     private void loadLawyers() {
@@ -65,6 +91,13 @@ public class LawyersFragment extends Fragment {
      * alguna modificación u alta*/
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(Activity.RESULT_OK == resultCode){
+            switch (requestCode){
+                case REQUEST_UPDATE_DELETE_LAWYER:
+                    loadLawyers();
+                    break;
+            }
+        }
 
     }
 

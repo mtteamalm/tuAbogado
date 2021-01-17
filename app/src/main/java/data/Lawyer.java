@@ -27,6 +27,17 @@ public class Lawyer {
         this.bio = bio;
         this.avatarUri = avatarUri;
     }
+
+    /** Nuevo constructor necesario para la carga del abogado desde LawyerDetailFragment.java*/
+    public Lawyer(Cursor cursor) {
+        id = cursor.getString(cursor.getColumnIndex(LawyersContract.LawyerEntry.ID));
+        name = cursor.getString(cursor.getColumnIndex(LawyersContract.LawyerEntry.NAME));
+        specialty = cursor.getString(cursor.getColumnIndex(LawyersContract.LawyerEntry.SPECIALTY));
+        phoneNumber = cursor.getString(cursor.getColumnIndex(LawyersContract.LawyerEntry.PHONE_NUMBER));
+        bio = cursor.getString(cursor.getColumnIndex(LawyersContract.LawyerEntry.BIO));
+        avatarUri = cursor.getString(cursor.getColumnIndex(LawyersContract.LawyerEntry.AVATAR_URI));
+    }
+
     /*MÉTODOS GETTER*/
     public String getName() {
         return name;
