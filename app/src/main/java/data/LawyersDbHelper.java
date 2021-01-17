@@ -101,7 +101,7 @@ public class LawyersDbHelper extends SQLiteOpenHelper {
         Cursor c = getReadableDatabase().query(
                 LawyersContract.LawyerEntry.TABLE_NAME,
                 null,
-                LawyersContract.LawyerEntry.ID + "LIKE ?",
+                LawyersContract.LawyerEntry.ID + " LIKE ?",
                 new String[]{lawyerId},
                 null,
                 null,

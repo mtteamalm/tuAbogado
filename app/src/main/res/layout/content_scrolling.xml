@@ -9,10 +9,6 @@
     tools:context="lawyerdetail.LawyerDetailActivity"
     tools:showIn="@layout/activity_lawyer_detail">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="@string/large_text" />
+
 
 </androidx.core.widget.NestedScrollView>
