@@ -80,7 +80,8 @@ public class LawyersDbHelper extends SQLiteOpenHelper {
     public long saveLawyer(Lawyer lawyer){
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
-        return sqLiteDatabase.insert(DATABASE_NAME, null, lawyer.toContentValues());
+        return sqLiteDatabase.insert(LawyersContract.LawyerEntry.TABLE_NAME,
+                null, lawyer.toContentValues());
     }
 
     /*Método para obtener todos los abogados*/
@@ -109,5 +110,21 @@ public class LawyersDbHelper extends SQLiteOpenHelper {
         /*Retormanos el cursor resultado de nuestra consulta*/
         return c;
 
+    }
+
+    public int deleteLawyer(String lawyerId){
+        return getWritableDatabase().delete(
+                LawyersContract.LawyerEntry.TABLE_NAME,
+                LawyersContract.LawyerEntry.ID + " LIKE ?",
+                new String[]{lawyerId});
+    }
+
+    public int updateLawyer(Lawyer Lawyer, String lawyerId){
+        return getWritableDatabase().update(
+                LawyersContract.LawyerEntry.TABLE_NAME,
+                Lawyer.toContentValues(),
+                LawyersContract.LawyerEntry.ID + " LIKE ?",
+                new String[]{lawyerId}
+        );
     }
 }

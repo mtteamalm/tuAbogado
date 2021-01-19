@@ -13,9 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import addeditlawyer.AddEditLawyerActivity;
 import data.LawyersContract;
 import data.LawyersDbHelper;
 import lawyerdetail.LawyerDetailActivity;
@@ -25,7 +27,8 @@ import lawyers.LawyersCursorAdapter;
 
 public class LawyersFragment extends Fragment {
 
-    private static final int REQUEST_UPDATE_DELETE_LAWYER = 2;
+    public static final int REQUEST_UPDATE_DELETE_LAWYER = 2;
+
     private LawyersDbHelper mLawyersDbHelper;
 
     private ListView mLawyersList;
@@ -65,6 +68,13 @@ public class LawyersFragment extends Fragment {
                 showDetailScreen(currentLawyerId);
             }
         });
+
+        mAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddScreen();
+            }
+        });
         /** FIN EVENTOS*/
 
         //Instancia del Helper
@@ -74,6 +84,11 @@ public class LawyersFragment extends Fragment {
         loadLawyers();
 
         return root;
+    }
+
+    private void showAddScreen() {
+        Intent intent = new Intent(getActivity(), AddEditLawyerActivity.class);
+        startActivityForResult(intent, AddEditLawyerActivity.REQUEST_ADD_LAWYER);
     }
 
     private void showDetailScreen(String lawyerId) {
@@ -93,12 +108,21 @@ public class LawyersFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(Activity.RESULT_OK == resultCode){
             switch (requestCode){
+                case AddEditLawyerActivity.REQUEST_ADD_LAWYER:
+                    showSuccessfullSavedMessage();
+                    loadLawyers();
+                    break;
                 case REQUEST_UPDATE_DELETE_LAWYER:
                     loadLawyers();
                     break;
             }
         }
 
+    }
+
+    private void showSuccessfullSavedMessage() {
+        Toast.makeText(getActivity(),
+                "Alta de Abogado realizada correctamente", Toast.LENGTH_SHORT).show();
     }
 
     /** Tarea Asíncrona para la carga de los abogados*/

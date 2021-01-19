@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TuAbogado">
         <activity
+            android:name="addeditlawyer.AddEditLawyerActivity"
+            android:label="@string/title_activity_add_edit_lawyer"
+            android:theme="@style/Theme.TuAbogado.NoActionBar"></activity>
+        <activity
             android:name="lawyerdetail.LawyerDetailActivity"
             android:label="@string/title_activity_lawyer_detail"
-            android:theme="@style/Theme.TuAbogado.NoActionBar"></activity>
+            android:theme="@style/Theme.TuAbogado.NoActionBar" />
         <activity
             android:name="lawyers.LawyersActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -22,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

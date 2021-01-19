@@ -1,5 +1,6 @@
 package lawyerdetail;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -9,10 +10,15 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.tuabogado.R;
 
+import data.LawyersDbHelper;
 import lawyers.LawyersActivity;
 
 public class LawyerDetailActivity extends AppCompatActivity {
@@ -38,5 +44,7 @@ public class LawyerDetailActivity extends AppCompatActivity {
                     .add(R.id.lawyer_detail_container, fragment)
                     .commit();
         }
+
     }
+
 }

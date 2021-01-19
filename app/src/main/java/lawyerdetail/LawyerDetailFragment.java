@@ -1,5 +1,7 @@
 package lawyerdetail;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -8,6 +10,9 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,11 +20,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.tuabogado.LawyersFragment;
 import com.example.tuabogado.R;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
+import addeditlawyer.AddEditLawyerActivity;
 import data.Lawyer;
 import data.LawyersDbHelper;
+import lawyers.LawyersActivity;
 
 /**
  * Vista para el detalle del abogado
@@ -66,6 +74,36 @@ public class LawyerDetailFragment extends Fragment {
         if (getArguments() != null) {
             mLawyerId = getArguments().getString(ARG_LAWYER_ID);
         }
+
+        //Mostramos el menú de opciones
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_lawyer_detail, menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.edit_lawyer:
+                showEditScreen();
+                break;
+            case R.id.delete_lawyer:
+                new DeleteLawyerTask().execute();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showEditScreen() {
+        Intent intent = new Intent(getActivity(), AddEditLawyerActivity.class);
+        intent.putExtra(LawyersActivity.EXTRA_LAWYER_ID, mLawyerId);
+        startActivityForResult(intent, LawyersFragment.REQUEST_UPDATE_DELETE_LAWYER);
     }
 
     @Override
@@ -127,5 +165,33 @@ public class LawyerDetailFragment extends Fragment {
                 showLoadError();
             }
         }
+    }
+
+    /** Tarea para eliminar el abogado*/
+    private class DeleteLawyerTask extends AsyncTask<Void, Void, Integer>{
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+
+            return mLawyersDbHelper.deleteLawyer(mLawyerId);
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer){
+            showLawyersScreen(integer > 0);
+        }
+    }
+
+    private void showLawyersScreen(boolean requery) {
+        if(!requery){
+            showDeleteError();
+        }
+        getActivity().setResult(requery ? Activity.RESULT_OK : Activity.RESULT_CANCELED);
+        Toast.makeText(getActivity(), "Te l@ has fulminad@ correctamente", Toast.LENGTH_SHORT).show();
+        getActivity().finish();
+    }
+
+    private void showDeleteError() {
+        Toast.makeText(getActivity(), "Error al eliminar abogado", Toast.LENGTH_SHORT).show();
     }
 }
